@@ -1,0 +1,86 @@
+create database job;
+
+create table job.user(
+    id int primary key auto_increment,
+    firstname varchar(55),
+    lastname varchar(55),
+    email varchar(60) unique not null,
+    phonenumber bigint(10) unique not null,
+    user_role enum('user','admin','applicant') not null,
+    password varchar(55)
+);
+
+
+-- Table: education_details
+CREATE TABLE education_details (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    edu_user_id INT,
+    institution_name VARCHAR(255),
+    degree VARCHAR(100),
+    field_of_study VARCHAR(100),
+    start_date DATE,
+    end_date DATE,
+    description TEXT
+);
+
+-- Table: job_experiences
+CREATE TABLE job_experiences (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    exp_user_id INT,
+    company_name VARCHAR(255),
+    position VARCHAR(100),
+    exp_start_date DATE,
+    exp_end_date DATE,
+    exp_description VARCHAR(500)
+);
+
+-- Table: job_production
+CREATE TABLE job_production (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    JobTitle VARCHAR(255),
+    company_employees INT,
+    job_prefer_skills VARCHAR(255),
+    job_salary DECIMAL(10,2),
+    About_the_job VARCHAR(1000),
+    preferred_qualification VARCHAR(1000),
+    job_Responsibilities VARCHAR(1000),
+    company_location VARCHAR(255),
+    company_workplace ENUM('on-site','Hybrid','WorkfromHome'),
+    job_type ENUM('Full-time','Part-time'),
+    company_logo VARCHAR(255),
+    userid INT
+);
+
+-- Table: user
+CREATE TABLE user (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    firstname VARCHAR(55),
+    lastname VARCHAR(55),
+    email VARCHAR(60),
+    phone_number BIGINT,
+    user_role ENUM('user','admin','recruiter'),
+    password VARCHAR(255),
+    token VARCHAR(500)
+);
+
+CREATE TABLE saved_jobs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    job_id INT,
+    -- Add any additional columns here if needed
+    FOREIGN KEY (user_id) REFERENCES user(id),
+    FOREIGN KEY (job_id) REFERENCES job_production(id)
+);
+
+
+-- Table: job_applications
+CREATE TABLE job_applications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    job_id INT,
+    application_text TEXT,
+    status VARCHAR(20),
+    applied_at TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user(id),
+    FOREIGN KEY (job_id) REFERENCES job_production(id)
+);
